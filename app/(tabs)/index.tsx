@@ -2,7 +2,6 @@ import { Platform, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
 import {BackCamView} from "@/components/camera-back";
 
 export default function HomeScreen() {
