@@ -1,20 +1,20 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BackCamView } from "@/components/camera-back";
 
 export default function HomeScreen() {
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container} edges={['top']}>
 			<BackCamView />
-		</View>
+		</SafeAreaView>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#000",
-		padding: 16,
+		backgroundColor: "#fff",
 	},
 });

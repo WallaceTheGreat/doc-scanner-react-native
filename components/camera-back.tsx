@@ -68,7 +68,9 @@ export const BackCamView = () => {
 		setIsUploading(true);
 
 		try {
-			// Step 1: Create the document
+			// Generate the filename that will be used for both path and upload
+			const filename = `${Date.now()}.jpg`;
+
 			const documentUrl = buildApiUrl(API_ENDPOINTS.DOCUMENTS);
 			const documentResponse = await fetch(documentUrl, {
 				method: "POST",
@@ -78,7 +80,7 @@ export const BackCamView = () => {
 				body: JSON.stringify({
 					document: {
 						title: documentTitle,
-						path: documentTitle,
+						path: filename,
 						created_by: 1,
 					},
 				}),
@@ -89,12 +91,11 @@ export const BackCamView = () => {
 				throw new Error(`Failed to create document: ${documentResponse.statusText} - ${errorText}`);
 			}
 
-			// Step 2: Upload the image
 			const uploadUrl = buildApiUrl(API_ENDPOINTS.DOCUMENTS_UPLOAD);
 			const formData = new FormData();
 			formData.append("file", {
 				uri: capturedPicture.uri,
-				name: `${Date.now()}.jpg`,
+				name: filename,
 				type: "image/jpeg",
 			} as any);
 
@@ -134,10 +135,12 @@ export const BackCamView = () => {
 
 	return (
 		<View style={styles.container}>
-			<CameraView ref={cameraRef} style={styles.preview} facing="back" />
+			<View style={styles.cameraWrapper}>
+				<CameraView ref={cameraRef} style={styles.preview} facing="back" />
+			</View>
 
-			<TouchableOpacity style={styles.button} onPress={takePicture}>
-				<Text style={styles.btnText}>oOo</Text>
+			<TouchableOpacity style={styles.button} onPress={takePicture} activeOpacity={0.8}>
+				<View style={styles.buttonInner} />
 			</TouchableOpacity>
 
 			<Modal
@@ -187,19 +190,49 @@ export const BackCamView = () => {
 };
 
 const styles = StyleSheet.create({
-	container: { flex: 1, backgroundColor: "#000" },
-	preview: { flex: 1 },
+	container: { 
+		flex: 1, 
+		backgroundColor: "#fff",
+	},
+	cameraWrapper: {
+		flex: 1,
+		width: "100%",
+		backgroundColor: "#fff",
+		borderTopLeftRadius: 16,
+		borderTopRightRadius: 16,
+		overflow: "hidden",
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: -2 },
+		shadowOpacity: 0.1,
+		shadowRadius: 8,
+		elevation: 5,
+	},
+	preview: { 
+		flex: 1,
+	},
 	button: {
 		position: "absolute",
-		bottom: 40,
+		bottom: 100,
 		alignSelf: "center",
-		padding: 16,
-		backgroundColor: "#ffffff88",
-		borderRadius: 12,
+		width: 80,
+		height: 80,
+		borderRadius: 40,
+		borderWidth: 4,
+		borderColor: "#fff",
+		backgroundColor: "transparent",
+		justifyContent: "center",
+		alignItems: "center",
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.3,
+		shadowRadius: 4,
+		elevation: 5,
 	},
-	btnText: {
-		fontSize: 18,
-		fontWeight: "bold",
+	buttonInner: {
+		width: 64,
+		height: 64,
+		borderRadius: 32,
+		backgroundColor: "#ff3b30",
 	},
 	modalOverlay: {
 		flex: 1,

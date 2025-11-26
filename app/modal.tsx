@@ -1,15 +1,16 @@
 import { Link } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ModalScreen() {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <Text style={styles.title}>This is a modal</Text>
       <Link href="/" dismissTo style={styles.link}>
         <Text style={styles.linkText}>Go to home screen</Text>
       </Link>
-    </View>
+    </SafeAreaView>
   );
 }
 
